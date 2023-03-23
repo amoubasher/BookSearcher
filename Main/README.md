@@ -2,7 +2,7 @@
 
 [Repo Link](https://github.com/amoubasher/BookSearcher)
 
-[Deployed App](https://amoubasher.github.io/PasswordGenerator/)
+[Deployed App](https://amoubasher.github.io/BookSearcher/)
 
 
 ## Table of Contents
