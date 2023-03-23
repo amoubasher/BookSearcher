@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Container, Col, Form, Button, Card, Row } from "react-bootstrap";
-
-import { useMutation } from "@apollo/client";
-import { SAVE_BOOK } from "../utils/mutations"
-import {saveBookIds, getSavedBookIds } from "../utils/localStorage"
+import { 
+  Container, 
+  Col, 
+  Form, 
+  Button, 
+  Card, 
+  Row 
+} from "react-bootstrap";
 
 import Auth from "../utils/auth";
+
+import { useMutation } from '@apollo/client';
+import { SAVE_BOOK } from '../utils/mutations';
+import { saveBookIds, getSavedBookIds } from "../utils/localStorage";
 
 const SearchBooks = () => {
   // create state for holding returned google api data
@@ -15,6 +22,8 @@ const SearchBooks = () => {
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+
+  const [saveBook] = useMutation(SAVE_BOOK);
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -33,10 +42,10 @@ const SearchBooks = () => {
     try {
       const response = await fetch(
         `https://www.googleapis.com/books/v1/volumes?q=${searchInput}`
-      )
+      );
 
       if (!response.ok) {
-        throw new Error("something went wrong!");
+        throw new Error('something went wrong!');
       }
 
       const { items } = await response.json();
@@ -69,10 +78,10 @@ const SearchBooks = () => {
     }
 
     try {
-      const { data } = await saveBookIds({
-        variables: { bookData: { ...bookToSave } }
-      })
-      console.log(savedBookIds);
+      const { data } = await saveBook({
+        variables: { bookData: { ...bookToSave } },
+      });
+      console.log(data);
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
@@ -115,7 +124,7 @@ const SearchBooks = () => {
         <Row>
           {searchedBooks.map((book) => {
             return (
-              <Col md="4">
+              
                 <Card key={book.bookId} border="dark">
                   {book.image ? (
                     <Card.Img
@@ -145,7 +154,7 @@ const SearchBooks = () => {
                     )}
                   </Card.Body>
                 </Card>
-              </Col>
+              
             );
           })}
         </Row>
